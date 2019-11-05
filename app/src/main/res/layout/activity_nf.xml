@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity__inicio"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="modelo.ideia.ActivityNF"
+    android:padding="10dp"
+    >
+
+
+
+
+
+
+    <ImageView
+        android:id="@+id/userid"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:srcCompat="@tools:sample/avatars"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/userid"
+        app:layout_constraintStart_toEndOf="@+id/userid"
+
+        app:layout_goneMarginStart="16dp"
+        tools:text="User A" />
+
+    <TextView
+        android:id="@+id/conteudo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/userid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userid"
+        app:layout_constraintBottom_toTopOf="@+id/imgpostTL"
+        android:layout_marginTop="10dp"
+        app:layout_goneMarginBottom="10dp"
+        android:layout_marginBottom="5dp"
+        tools:text="Eu sou a videira verdadeira e tu es as folhsa
+        xhzhxbhzbxhzxhbzhxbhxbzhbxhzbxhb" />
+
+
+    <ImageButton
+        android:layout_marginTop="8dp"
+        android:id="@+id/imgpostTL"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conteudo"
+        app:layout_constraintDimensionRatio="16:9"
+        android:autofillHints="@string/add_foto"
+        android:padding="10dp"
+
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/btngosteiTL"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_light_bulb"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toStartOf="@+id/btnsalvarTL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgpostTL"
+        tools:ignore="ContentDescription,MissingConstraints"
+        android:backgroundTint="#aaaaaa"
+        />
+
+    <ImageButton
+        android:id="@+id/btnsalvarTL"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="120dp"
+        android:background="@drawable/ic_favorite_black_24dp"
+       app:layout_constraintStart_toEndOf="@id/btngosteiTL"
+        app:layout_constraintTop_toBottomOf="@+id/imgpostTL"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+
+        tools:ignore="ContentDescription" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

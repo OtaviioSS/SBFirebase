@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "179169740053",
+    "firebase_url": "https://socity-business.firebaseio.com",
+    "project_id": "socity-business",
+    "storage_bucket": "socity-business.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179169740053:android:b7c4bf232651dadbaa551c",
+        "android_client_info": {
+          "package_name": "com.example.socitybusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179169740053-cicmoeab344166og76f847mnunk4pafe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socitybusiness",
+            "certificate_hash": "6385c22aa756463caf140be19b4954d8d186cec0"
+          }
+        },
+        {
+          "client_id": "179169740053-oqtkjhsvjtt47ikhdngltbqb3c6h9hnh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY2Txub9y_C03rXONWxqO5TUxMkmL9W8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179169740053-oqtkjhsvjtt47ikhdngltbqb3c6h9hnh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
