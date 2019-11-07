@@ -85,47 +85,10 @@
         android:background="#eed700"
         android:text="@string/concluir"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@id/txtCadSocial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barsenhaCadEm"
-        />
-
-    <TextView
-        android:id="@+id/txtCadSocial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ou_cadastre_se_com_fcebook_ou_google"
-        app:layout_constraintTop_toBottomOf="@+id/btnconcluirCadEm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnCadFacebookEM"
-        tools:layout_editor_absoluteY="680dp" />
-
-    <Button
-        android:id="@+id/btnCadFacebookEM"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnCadGoogleEM"
-        app:layout_constraintTop_toBottomOf="@+id/txtCadSocial"
-        android:text="@string/facebook"
-        android:textColor="#ffffff"
-        android:background="#3b5998"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
-
-    <Button
-        android:id="@+id/btnCadGoogleEM"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCadFacebookEM"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:text="@string/google"
-        android:background="#db4a39"
         />
 
     <TextView

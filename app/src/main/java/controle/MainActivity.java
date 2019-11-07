@@ -59,10 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCad;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference ;
-    private FirebaseAuth oauth;
-    private FirebaseAuth.AuthStateListener oauthStateListener;
     private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseUser account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +73,37 @@ public class MainActivity extends AppCompatActivity {
         firebaseauth();
         gerenciadorLogin();
 
-
-
         //---------------LOGIN GOOGLE--------------------------------
         findViewById(R.id.sign_in_button).setOnClickListener(cliquegoogle);
-
         setUpGoogleApiClient();
+    }
+    private void cliquesdebotao() {
+        btnlogar.setOnClickListener(logarsem);
+        btnCad.setOnClickListener(telacadastro);
+        esqueci.setOnClickListener(resetarsenha);
+        btnFacebook.setOnClickListener(Loginfb);
 
+    }
+    private void inicializarComponentes() {
+        esqueci = findViewById(R.id.btnEsqueci);
+        baremail = findViewById(R.id.barEmailLogin);
+        barsenha = findViewById(R.id.barSenhaLogin);
+        btnlogar = findViewById(R.id.btnLogarLogin);
+        btnCad = findViewById(R.id.btnCadEmail);
+        btnFacebook = findViewById(R.id.btnFacebookLogin);
+        mCallBackManager = CallbackManager.Factory.create();
+
+
+    }
+    private void escolherTipoCad() {
+        AlertDialog alertDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Qual o tipo de conta Você deseja?");
+        builder.setPositiveButton("Empreendedor", EM);
+        builder.setNegativeButton("Investidor", IA);
+        alertDialog = builder.create();
+        alertDialog.show();
     }
     private void inicializarfirebase() {
 
@@ -124,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         };
     }
     private void signInCredential(AuthCredential credential) {
-
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -132,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             FirebaseUser usuario = mAuth.getCurrentUser();
                         }else{
-                            Toast.makeText(MainActivity.this,"O login Flahou",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"O login Falhou",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -160,36 +180,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //-----------------------------------------------------------------------------------------------------------------------------
-    private void cliquesdebotao() {
-        btnlogar.setOnClickListener(logar);
-        btnCad.setOnClickListener(telacadastro);
-        esqueci.setOnClickListener(resetarsenha);
-        btnFacebook.setOnClickListener(Loginfb);
 
-    }
-    private void inicializarComponentes() {
-        esqueci = findViewById(R.id.btnEsqueci);
-        baremail = findViewById(R.id.barEmailLogin);
-        barsenha = findViewById(R.id.barSenhaLogin);
-        btnlogar = findViewById(R.id.btnLogarLogin);
-        btnCad = findViewById(R.id.btnCadEmail);
-        btnFacebook = findViewById(R.id.btnFacebookLogin);
-        mCallBackManager = CallbackManager.Factory.create();
-
-
-    }
-    private void escolherTipoCad() {
-        AlertDialog alertDialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Qual o tipo de conta Você deseja?");
-        builder.setPositiveButton("Empreendedor", EM);
-        builder.setNegativeButton("Investidor", IA);
-        alertDialog = builder.create();
-        alertDialog.show();
-    }
-//----------------------------------------------------------------------------------------------------------------------------------
     View.OnClickListener telacadastro = new View.OnClickListener() {
           @Override
              public void onClick(View view) {
@@ -200,9 +191,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("public_profile", "email"));
+            Intent intent = new Intent(MainActivity.this,Activity_Inicio.class);
+            startActivity(intent);
+            finish();
         }
     };
-    //------------------------------------------------------------------------------------------------------------------------------
     DialogInterface.OnClickListener EM = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -210,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
               startActivity(intenEM);
             }
         };
-
         DialogInterface.OnClickListener IA = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -218,7 +210,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-
         View.OnClickListener resetarsenha = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-
         View.OnClickListener logar = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +225,13 @@ public class MainActivity extends AppCompatActivity {
                 login(email,senha);
                 }
             };
+        View.OnClickListener logarsem = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Activity_Inicio.class);
+                startActivity(intent);
+            }
+        };
 
     public void  updateUI(GoogleSignInAccount account){
         if(account != null){
@@ -244,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"U Didnt signed in",Toast.LENGTH_LONG).show();
         }
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -253,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
         updateUI(account);
 
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -270,8 +265,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
     public void setUpGoogleApiClient(){
 
         //GoogleSignInOptions
@@ -282,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-
     View.OnClickListener cliquegoogle = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -299,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -313,10 +304,8 @@ public class MainActivity extends AppCompatActivity {
             updateUI(null);
         }
     }
-
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

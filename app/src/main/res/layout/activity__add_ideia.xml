@@ -58,7 +58,7 @@
         android:id="@+id/imgUserAddNovaIdeia"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        tools:srcCompat="@tools:sample/avatars"
+        android:src="@drawable/btnloginshape"
         app:layout_constraintStart_toStartOf="@+id/conteudoAddIdeia"
         app:layout_constraintTop_toBottomOf="@+id/txtAddNovaIdeia"
         android:layout_marginTop="50dp"
@@ -83,7 +83,7 @@
     <TextView
         app:layout_constraintStart_toEndOf="@+id/imgUserAddNovaIdeia"
         app:layout_constraintBottom_toBottomOf="@+id/imgUserAddNovaIdeia"
-        android:id="@+id/textView"
+        android:id="@+id/txtusename"
         android:layout_marginStart="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

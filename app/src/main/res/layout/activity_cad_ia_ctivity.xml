@@ -103,54 +103,17 @@
             android:hint="Valor do Se patrimonio"
             tools:ignore="Autofill,HardcodedText,LabelFor" />
 
-        <Button
-            android:id="@+id/btnconcluirCadIN"
-            app:layout_constraintTop_toBottomOf="@id/vlpratimonio"
-            app:layout_constraintBottom_toTopOf="@+id/txtCadSocialIN"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:background="#eed700"
-            android:text="@string/concluir"
-            android:textColor="@android:color/white"
-            />
-
-    <TextView
-        android:id="@+id/txtCadSocialIN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ou_cadastre_se_com_fcebook_ou_google"
-        app:layout_constraintTop_toBottomOf="@+id/btnconcluirCadIN"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnCadFacebookIN"
-        tools:layout_editor_absoluteY="680dp" />
-
     <Button
-        android:id="@+id/btnCadFacebookIN"
+        android:id="@+id/btnconcluirCadIN"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnCadGoogleIN"
-        app:layout_constraintTop_toBottomOf="@+id/txtCadSocialIN"
-        android:text="@string/facebook"
-        android:textColor="#ffffff"
-        android:background="#3b5998"
+        android:layout_height="50dp"
+        android:background="#eed700"
+        android:text="@string/concluir"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <Button
-        android:id="@+id/btnCadGoogleIN"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vlpratimonio"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCadFacebookIN"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:text="@string/google"
-        android:background="#db4a39"
         />
 
     <TextView

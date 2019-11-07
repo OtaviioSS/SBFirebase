@@ -1,6 +1,9 @@
 package modelo;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class IdeiaModelo {
+    private String Id;
     private String nomeuser;
     private String conteudo;
     private String IdEM;
@@ -13,16 +16,31 @@ public class IdeiaModelo {
     }
 
 
-    public IdeiaModelo(String nomeuser, String conteudo, int imguser, int imgpub) {
+    public IdeiaModelo(String nomeuser, String conteudo, int imguser, int imgpub, String Id) {
         this.nomeuser = nomeuser;
         this.conteudo = conteudo;
         this.imguser = imguser;
         this.imgpub = imgpub;
+        this.Id = Id;
 
 
     }
+
+    public IdeiaModelo(String nome, String conteudo, int i, int i1) {
+
+    }
+
+
 // métodos getters e setters
 
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
 
     public String getIdEM() {
         return IdEM;

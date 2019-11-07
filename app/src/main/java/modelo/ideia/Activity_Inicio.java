@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,114 +21,102 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import Bancos.BacoSqlite;
+import controle.MainActivity;
 import modelo.IdeiaModelo;
-import modelo.IdeiasHolder;
 
 
 public class Activity_Inicio extends AppCompatActivity {
 
-    LinearLayoutManager linearLayoutManager;
     private FloatingActionButton btnmais;
-    private RecyclerView orecyclerView;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    private FloatingActionButton btnfsair;
+    private RecyclerView recyclerView;
 
-    FirebaseRecyclerAdapter<IdeiaModelo, IdeiasHolder> firebaseRecyclerAdapter;
-    FirebaseRecyclerOptions<IdeiaModelo> options;
-
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
+
+    ArrayList<IdeiaModelo> listadeideias;
+    ArrayAdapter<IdeiaModelo> ideaAdapterArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__inicio);
         inicializarcomponentes();
-        cliquesdebotao();
-        orecyclerView = findViewById(R.id.recyclerIicio);
         inicializarfirebase();
-        eventoDatabase();
+        cliquesdebotao();
 
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-
-        databaseReference = firebaseDatabase.getReference("Ideias");
-
-
-
-    }
-
-
-
-    private void eventoDatabase() {
-      options = new FirebaseRecyclerOptions.Builder<IdeiaModelo>().setQuery(databaseReference,IdeiaModelo.class).build();
-
-      firebaseRecyclerAdapter =  new FirebaseRecyclerAdapter<IdeiaModelo, IdeiasHolder>(options) {
-          @Override
-          protected void onBindViewHolder(@NonNull IdeiasHolder holder, int position, @NonNull IdeiaModelo model) {
-
-              holder.setDetails(getApplicationContext(),model.getNomeuser(),model.getImguser(),model.getConteudo(),model.getImgpub()    );
-
-          }
-
-          @NonNull
-          @Override
-          public IdeiasHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-              View  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_nf,parent,false);
-
-              IdeiasHolder viewHolder = new IdeiasHolder(view);
-
-              viewHolder.setOnClickListener(new IdeiasHolder.ClickListener() {
-                  @Override
-                  public void onItemClick(View view, int position) {
-                      Toast.makeText(Activity_Inicio.this,"Olá",Toast.LENGTH_LONG).show();
-                  }
-
-                  @Override
-                  public void onItemLongClick(View view, int position) {
-
-                      Toast.makeText(Activity_Inicio.this,"Clique Longue",Toast.LENGTH_LONG).show();
-                  }
-              });
-
-              return viewHolder;
-          }
-      };
-
-      orecyclerView.setLayoutManager(linearLayoutManager);
-      firebaseRecyclerAdapter.startListening();
-      orecyclerView.setAdapter(firebaseRecyclerAdapter);
+        listadeideias = new ArrayList<>();
+        recyclerView = findViewById(R.id.recyclerIicio);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CarregarIdeias();
+        IdeaAdapter adapter =  new IdeaAdapter(listadeideias);
+        recyclerView.setAdapter( adapter);
 
     }
+    private void CarregarIdeias() {
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(firebaseRecyclerAdapter !=null){
-            firebaseRecyclerAdapter.startListening();
-        }
-    }
 
-    private void inicializarfirebase() {
-        FirebaseApp.initializeApp(Activity_Inicio.this);
-        firebaseDatabase =FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-    }
+        /*BacoSqlite bacoSqlite = new BacoSqlite(Activity_Inicio.this);
+        bacoSqlite.getAll();
+        listadeideias.set(bacoSqlite.getAll())*/
 
-    private void cliquesdebotao() {
-        btnmais.setOnClickListener(abrirAddIdeias);
+        Query query = databaseReference.child("Ideias");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    for (DataSnapshot obj : dataSnapshot.getChildren()) {
+                        IdeiaModelo ideia = dataSnapshot.getValue(IdeiaModelo.class);
+                        listadeideias.add(ideia);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
+
     }
 
     private void inicializarcomponentes() {
         btnmais = findViewById(R.id.floatingAdd);
+        btnfsair = findViewById(R.id.btnsair);
 
 
     }
+    private void inicializarfirebase() {
+        FirebaseApp.initializeApp(Activity_Inicio.this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+    private void cliquesdebotao() {
+        btnmais.setOnClickListener(abrirAddIdeias);
+        btnfsair.setOnClickListener(sairdoApp);
+    }
+
 
     View.OnClickListener abrirAddIdeias = new View.OnClickListener() {
         @Override
@@ -136,10 +125,16 @@ public class Activity_Inicio extends AppCompatActivity {
             startActivity(intent);
 
         }
-    };
+    }; View.OnClickListener sairdoApp = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(Activity_Inicio.this, MainActivity.class);
+            startActivity(intent);
+    }};
 
 
-    @Override
-    public void onBackPressed() {
-    }
-    }
+
+
+
+}

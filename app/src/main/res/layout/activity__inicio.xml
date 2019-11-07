@@ -34,5 +34,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/activity_nf" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="50dp"
+        android:id="@+id/btnsair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        tools:layout_editor_absoluteX="305dp"
+        tools:layout_editor_absoluteY="650dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

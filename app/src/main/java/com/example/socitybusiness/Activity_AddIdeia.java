@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,12 +26,15 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+import Bancos.BacoSqlite;
 import modelo.IdeiaModelo;
 
 public class Activity_AddIdeia extends AppCompatActivity {
     private ImageButton addimg;
     private Button concluir;
+    private TextView nome;
     private EditText conteudo;
+    private ImageView imguser;
     private DatabaseReference databaseReference;
     private Uri imagemSelecionada;
     @Override
@@ -59,6 +64,7 @@ public class Activity_AddIdeia extends AppCompatActivity {
     }
 
     private void inicializarcompnetente() {
+        nome= findViewById(R.id.username);
         conteudo = findViewById(R.id.conteudoAddIdeia);
         addimg = findViewById(R.id.btnImgAddIdeia);
         concluir = findViewById(R.id.btnConcluirAddIdeia);
@@ -102,11 +108,16 @@ public class Activity_AddIdeia extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             try {
-            IdeiaModelo ideia = new IdeiaModelo();
+            IdeiaModelo ideiasql = new IdeiaModelo();
+            ideiasql.setId(UUID.randomUUID().toString());
+            ideiasql.setConteudo(conteudo.getText().toString());
+                BacoSqlite bacoSqlite = new BacoSqlite(Activity_AddIdeia.this);
+                bacoSqlite.salvarIdeia(ideiasql);
+           /* IdeiaModelo ideia = new IdeiaModelo();
             ideia.setIdEM(UUID.randomUUID().toString());
             ideia.setConteudo(conteudo.getText().toString());
             databaseReference.child("Ideias").child(ideia.getIdEM()).setValue(ideia);
-            uploadimg();
+            uploadimg();*/
             Toast.makeText(Activity_AddIdeia.this,"Ideia Adicionada com Sucesso",Toast.LENGTH_LONG).show();
             }catch (RuntimeException err){
                 Toast.makeText(Activity_AddIdeia.this,"Erro" +err,Toast.LENGTH_LONG).show();
