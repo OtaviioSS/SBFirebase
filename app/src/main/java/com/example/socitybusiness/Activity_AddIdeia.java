@@ -3,6 +3,7 @@ package com.example.socitybusiness;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,10 +28,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-import Bancos.BacoSqlite;
 import modelo.IdeiaModelo;
 
 public class Activity_AddIdeia extends AppCompatActivity {
+
+    private static  final int SELECAO_GALERIA = 200;
     private ImageButton addimg;
     private Button concluir;
     private TextView nome;
@@ -37,6 +40,8 @@ public class Activity_AddIdeia extends AppCompatActivity {
     private ImageView imguser;
     private DatabaseReference databaseReference;
     private Uri imagemSelecionada;
+    private String urlImagemSelecionada ="";
+    StorageReference storageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,7 @@ public class Activity_AddIdeia extends AppCompatActivity {
         FirebaseApp.initializeApp(Activity_AddIdeia.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+
 
 
     }
@@ -74,54 +80,25 @@ public class Activity_AddIdeia extends AppCompatActivity {
     View.OnClickListener selecionarimagem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent =new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult( intent,0);
-        }
-    };
-    private void uploadimg() {
-        String filename = UUID.randomUUID().toString();
-        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
-        ref.putFile(imagemSelecionada)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Log.i("Sucesso", uri.toString());
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("Erro", e.getMessage(), e);
+            Intent intent =new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if(intent.resolveActivity(getPackageManager())!=null){
+                startActivityForResult( intent,SELECAO_GALERIA);
 
             }
-        });
+        }
+    };
 
-
-
-    }
     View.OnClickListener adicionarIdeia = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             try {
-            IdeiaModelo ideiasql = new IdeiaModelo();
-            ideiasql.setId(UUID.randomUUID().toString());
-            ideiasql.setConteudo(conteudo.getText().toString());
-                BacoSqlite bacoSqlite = new BacoSqlite(Activity_AddIdeia.this);
-                bacoSqlite.salvarIdeia(ideiasql);
-           /* IdeiaModelo ideia = new IdeiaModelo();
+                IdeiaModelo ideia = new IdeiaModelo();
             ideia.setIdEM(UUID.randomUUID().toString());
             ideia.setConteudo(conteudo.getText().toString());
             databaseReference.child("Ideias").child(ideia.getIdEM()).setValue(ideia);
-            uploadimg();*/
             Toast.makeText(Activity_AddIdeia.this,"Ideia Adicionada com Sucesso",Toast.LENGTH_LONG).show();
             }catch (RuntimeException err){
                 Toast.makeText(Activity_AddIdeia.this,"Erro" +err,Toast.LENGTH_LONG).show();
-
             }
         }
     };
@@ -134,5 +111,24 @@ public class Activity_AddIdeia extends AppCompatActivity {
 
             }
 
+
+        String filename = UUID.randomUUID().toString();
+        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
+        ref.putFile(imagemSelecionada)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                        firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.i("Sucesso", uri.toString());
+                                urlImagemSelecionada = uri.toString();
+
+                            }
+
+
+                        });
     }
-}
+});
+        }}

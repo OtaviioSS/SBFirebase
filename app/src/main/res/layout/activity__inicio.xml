@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="modelo.ideia.Activity_Inicio">
+    tools:context="controle.Activity_Inicio">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingAdd"

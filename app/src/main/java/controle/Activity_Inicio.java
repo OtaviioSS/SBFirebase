@@ -1,12 +1,9 @@
-package modelo.ideia;
+package controle;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
@@ -17,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.socitybusiness.Activity_AddIdeia;
 import com.example.socitybusiness.R;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,10 +26,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import Bancos.BacoSqlite;
-import controle.MainActivity;
 import modelo.IdeiaModelo;
+import modelo.ideia.IdeiaAdapter;
 
 
 public class Activity_Inicio extends AppCompatActivity {
@@ -44,11 +40,11 @@ public class Activity_Inicio extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private IdeiaAdapter ideiaAdapter;
 
 
+    List<IdeiaModelo> listadeideias = new ArrayList<>();
 
-    ArrayList<IdeiaModelo> listadeideias;
-    ArrayAdapter<IdeiaModelo> ideaAdapterArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,48 +54,44 @@ public class Activity_Inicio extends AppCompatActivity {
         inicializarfirebase();
         cliquesdebotao();
 
-        listadeideias = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerIicio);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CarregarIdeias();
-        IdeaAdapter adapter =  new IdeaAdapter(listadeideias);
-        recyclerView.setAdapter( adapter);
+        recyclerView.setHasFixedSize(true);
+        ideiaAdapter = new IdeiaAdapter(listadeideias);
+        recyclerView.setAdapter(ideiaAdapter);
+
+        RecuperarIdeias();
+
+
+
+
+
 
     }
-    private void CarregarIdeias() {
 
-
-        /*BacoSqlite bacoSqlite = new BacoSqlite(Activity_Inicio.this);
-        bacoSqlite.getAll();
-        listadeideias.set(bacoSqlite.getAll())*/
-
-        Query query = databaseReference.child("Ideias");
-        query.addValueEventListener(new ValueEventListener() {
+    private void RecuperarIdeias() {
+        DatabaseReference empresaRef = databaseReference.child("Ideias");
+        empresaRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    for (DataSnapshot obj : dataSnapshot.getChildren()) {
-                        IdeiaModelo ideia = dataSnapshot.getValue(IdeiaModelo.class);
-                        listadeideias.add(ideia);
-                    }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                listadeideias.clear();
+
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    listadeideias.add(ds.getValue(IdeiaModelo.class) );
                 }
+
+                ideiaAdapter.notifyDataSetChanged();
+
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-        listadeideias.add(new IdeiaModelo("otavio","kdksdkmskdmdkm",0,0));
-
     }
+
 
     private void inicializarcomponentes() {
         btnmais = findViewById(R.id.floatingAdd);
@@ -118,6 +110,11 @@ public class Activity_Inicio extends AppCompatActivity {
     }
 
 
+
+
+
+
+
     View.OnClickListener abrirAddIdeias = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -131,7 +128,18 @@ public class Activity_Inicio extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(Activity_Inicio.this, MainActivity.class);
             startActivity(intent);
+
     }};
+
+
+    private  void singOut(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();;
+
+
+    }
+
+
 
 
 

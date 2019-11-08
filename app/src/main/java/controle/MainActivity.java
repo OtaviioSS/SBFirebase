@@ -41,8 +41,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
-import modelo.ideia.Activity_Inicio;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "lo" ;
@@ -268,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
     public void setUpGoogleApiClient(){
 
         //GoogleSignInOptions
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();

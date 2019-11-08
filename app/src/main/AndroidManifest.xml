@@ -12,7 +12,7 @@
 
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.BottomSheetDialog"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,MissingApplicationIcon">
 
 
@@ -35,7 +35,7 @@
 
         <activity android:name="controle.Cad_EM_Activity" />
         <activity android:name=".Activity_AddIdeia" />
-        <activity android:name="modelo.ideia.Activity_Inicio" />
+        <activity android:name="controle.Activity_Inicio" />
         <activity android:name="controle.Activity_ResetSenha" />
         <activity android:name="controle.ActivityCadInvestidor" />
         <activity android:name="modelo.ideia.ActivityNF" />

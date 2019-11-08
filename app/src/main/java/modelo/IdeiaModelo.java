@@ -2,13 +2,16 @@ package modelo;
 
 import com.google.firebase.database.DatabaseReference;
 
-public class IdeiaModelo {
+import java.io.Serializable;
+import java.net.URL;
+
+public class IdeiaModelo implements Serializable {
     private String Id;
     private String nomeuser;
     private String conteudo;
     private String IdEM;
-    private int imguser; // vai armazenar o identificador do recurso
-    private int imgpub; // vai armazenar o identificador do recurso
+    private String imguser; // vai armazenar o identificador do recurso
+    private String imgpub; // vai armazenar o identificador do recurso
 
 
     public IdeiaModelo(){
@@ -16,7 +19,7 @@ public class IdeiaModelo {
     }
 
 
-    public IdeiaModelo(String nomeuser, String conteudo, int imguser, int imgpub, String Id) {
+    public IdeiaModelo(String nomeuser, String conteudo, String imguser, String imgpub, String Id) {
         this.nomeuser = nomeuser;
         this.conteudo = conteudo;
         this.imguser = imguser;
@@ -26,9 +29,7 @@ public class IdeiaModelo {
 
     }
 
-    public IdeiaModelo(String nome, String conteudo, int i, int i1) {
 
-    }
 
 
 // métodos getters e setters
@@ -66,19 +67,19 @@ public class IdeiaModelo {
         this.conteudo = conteudo;
     }
 
-    public int getImguser() {
-        return this.imguser;
+    public String getImguser() {
+        return imguser;
     }
 
-    public void setImguser(int imguser) {
+    public void setImguser(String imguser) {
         this.imguser = imguser;
     }
 
-    public int getImgpub() {
-        return this.imgpub;
+    public String getImgpub() {
+        return imgpub;
     }
 
-    public void setImgpub(int imgpub) {
+    public void setImgpub(String imgpub) {
         this.imgpub = imgpub;
     }
 }
