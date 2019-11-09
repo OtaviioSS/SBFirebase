@@ -82,7 +82,7 @@
         android:id="@+id/btnconcluirCadEm"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:background="#eed700"
+        android:background="@drawable/btnloginshape"
         android:text="@string/concluir"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,11 +91,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <TextView
+    <ImageView
         android:id="@+id/txtNomeCadEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nome_completo"
+        android:src=""
         android:textColor="#eed700"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/barnomeCadEm"
