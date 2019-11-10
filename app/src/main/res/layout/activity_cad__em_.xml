@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="controle.Cad_EM_Activity"
+    tools:context="controle.cadastros.Cad_EM_Activity"
 
 
     >
@@ -36,17 +36,15 @@
 
 
     <EditText
-
         android:id="@+id/barnomeCadEm"
         app:layout_constraintTop_toBottomOf="@id/btnselcFotoCadEm"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtNomeCadEM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/baremailCadEm"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:textSize="8pt"
         android:textAlignment="textStart"
-        android:background="@drawable/barrasdetexto"
         android:inputType="textPersonName"
         android:hint="Nome Completo"
         tools:ignore="Autofill,HardcodedText,LabelFor"
@@ -54,12 +52,11 @@
 
     <EditText
         android:id="@+id/baremailCadEm"
-        android:hint="exemplo@email.com"
+        android:hint="Email*"
         app:layout_constraintTop_toBottomOf="@+id/barnomeCadEm"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtEmailCadEM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/barsenhaCadEm"
-        android:background="@drawable/barrasdetexto"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -71,18 +68,18 @@
         android:layout_height="40dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtSenhaEM"
         app:layout_constraintTop_toBottomOf="@id/baremailCadEm"
         app:layout_constraintBottom_toTopOf="@id/btnconcluirCadEm"
-        tools:ignore="Autofill,LabelFor"
-        android:background="@drawable/barrasdetexto"
+        tools:ignore="Autofill,HardcodedText,LabelFor"
+        android:hint="Senha*"
          />
 
     <Button
         android:id="@+id/btnconcluirCadEm"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/btnloginshape"
+        android:background="@drawable/btnredondo"
         android:text="@string/concluir"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,47 +92,40 @@
         android:id="@+id/txtNomeCadEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src=""
-        android:textColor="#eed700"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/barnomeCadEm"
-        app:layout_constraintEnd_toStartOf="@+id/btnselcFotoCadEm"
-        app:layout_constraintBottom_toTopOf="@+id/barnomeCadEm"
-        app:layout_constraintTop_toBottomOf="@id/btnselcFotoCadEm"
-        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_person_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/barnomeCadEm"
+        app:layout_constraintTop_toTopOf="@id/barnomeCadEm"
+        app:layout_constraintBottom_toBottomOf="@id/barnomeCadEm"
          />
 
-    <TextView
+    <ImageView
+        android:src="@drawable/ic_email_black_24dp"
         android:id="@+id/txtEmailCadEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/txtNomeCadEM"
-        app:layout_constraintEnd_toEndOf="@id/txtNomeCadEM"
-        app:layout_constraintTop_toBottomOf="@id/barnomeCadEm"
-        app:layout_constraintBottom_toTopOf="@+id/baremailCadEm"
-        android:layout_marginEnd="60dp"
-        android:textColor="#eed700"
-        android:textStyle="bold"
-        android:text="@string/email"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="262dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/baremailCadEm"
+        app:layout_constraintTop_toTopOf="@id/baremailCadEm"
+        app:layout_constraintBottom_toBottomOf="@id/baremailCadEm"
+      />
 
-    <TextView
+    <ImageView
+        android:src="@drawable/ic_lock_black_24dp"
         android:id="@+id/txtSenhaEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/senha"
-        android:layout_marginEnd="60dp"
         android:textColor="#eed700"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/txtNomeCadEM"
-        app:layout_constraintEnd_toEndOf="@id/txtNomeCadEM"
-        app:layout_constraintTop_toBottomOf="@id/baremailCadEm"
-        app:layout_constraintBottom_toTopOf="@id/barsenhaCadEm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/barsenhaCadEm"
+        app:layout_constraintTop_toTopOf="@id/barsenhaCadEm"
+        app:layout_constraintBottom_toBottomOf="@id/barsenhaCadEm"
         tools:layout_editor_absoluteX="33dp"
         tools:layout_editor_absoluteY="335dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/txtAddFoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

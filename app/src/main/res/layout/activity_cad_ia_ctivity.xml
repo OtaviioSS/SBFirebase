@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="controle.ActivityCadInvestidor"
+    tools:context="controle.cadastros.ActivityCadInvestidor"
 
     >
 
@@ -43,7 +43,7 @@
         <EditText
             android:id="@+id/barnomeCadIN"
             app:layout_constraintTop_toBottomOf="@id/btnselcfoto"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtNomeCadIN"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/baremailCadIN"
             android:layout_width="350dp"
@@ -52,7 +52,6 @@
             android:layout_marginTop="50dp"
             android:textSize="8pt"
             android:ems="24"
-            android:background="@drawable/barrasdetexto"
             android:inputType="textPersonName"
             android:hint="Nome Completo"
             tools:ignore="Autofill,HardcodedText,LabelFor"
@@ -62,43 +61,49 @@
             android:id="@+id/baremailCadIN"
             android:hint="exemplo@email.com"
             app:layout_constraintTop_toBottomOf="@+id/barnomeCadIN"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtEmailCadIN"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/barsenhaCadIN"
             android:layout_width="350dp"
             android:layout_height="40dp"
             android:textSize="8pt"
-            android:background="@drawable/barrasdetexto"
             android:layout_gravity="center"
             tools:ignore="Autofill,HardcodedText,LabelFor,TextFields" />
 
         <EditText
             android:id="@+id/barsenhaCadIN"
             app:layout_constraintTop_toBottomOf="@id/baremailCadIN"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtSenhaIN"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/vlpratimonio"
             android:layout_width="350dp"
             android:layout_height="40dp"
             android:ems="10"
             android:textSize="8pt"
-            android:background="@drawable/barrasdetexto"
             tools:text="xxxxxxxx"
             android:inputType="textPassword"
             tools:ignore="Autofill,LabelFor" />
 
+    <ImageView
+        android:id="@+id/txtpatrimonio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_attach_money_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/vlpratimonio"
+        app:layout_constraintTop_toTopOf="@id/vlpratimonio"
+        app:layout_constraintEnd_toStartOf="@id/vlpratimonio"
+        />
+
         <EditText
             android:id="@+id/vlpratimonio"
             app:layout_constraintTop_toBottomOf="@id/barsenhaCadIN"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtpatrimonio"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnconcluirCadIN"
             android:layout_width="350dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:ems="10"
             android:textSize="8pt"
-            android:background="@drawable/barrasdetexto"
             android:inputType="numberDecimal"
             android:hint="Valor do Se patrimonio"
             tools:ignore="Autofill,HardcodedText,LabelFor" />
@@ -107,7 +112,7 @@
         android:id="@+id/btnconcluirCadIN"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:background="#eed700"
+        android:background="@drawable/btnredondo"
         android:text="@string/concluir"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,49 +121,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <TextView
+    <ImageView
+        android:src="@drawable/ic_person_black_24dp"
         android:id="@+id/txtNomeCadIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nome_completo"
         android:textColor="#eed700"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/barnomeCadIN"
-        app:layout_constraintEnd_toStartOf="@+id/btnselcfoto"
-        app:layout_constraintStart_toStartOf="@+id/barnomeCadIN"
-        app:layout_constraintTop_toBottomOf="@id/btnselcfoto"
-        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/barnomeCadIN"
+        app:layout_constraintEnd_toStartOf="@id/barnomeCadIN"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/barnomeCadIN"
         />
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/txtEmailCadIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/txtNomeCadIN"
-        app:layout_constraintEnd_toEndOf="@id/txtNomeCadIN"
-        app:layout_constraintTop_toBottomOf="@id/barnomeCadIN"
-        app:layout_constraintBottom_toTopOf="@+id/baremailCadIN"
-        android:layout_marginEnd="60dp"
-        android:textColor="#eed700"
-        android:textStyle="bold"
-        android:text="@string/email"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="262dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/baremailCadIN"
+        app:layout_constraintTop_toTopOf="@id/baremailCadIN"
+        app:layout_constraintBottom_toBottomOf="@id/baremailCadIN"
+        android:src="@drawable/ic_email_black_24dp"
+         />
 
-    <TextView
-        android:id="@+id/textView3"
+    <ImageView
+        android:id="@+id/txtSenhaIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/senha"
-        android:layout_marginEnd="60dp"
-        android:textColor="#eed700"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/txtNomeCadIN"
-        app:layout_constraintEnd_toEndOf="@id/txtNomeCadIN"
-        app:layout_constraintTop_toBottomOf="@id/baremailCadIN"
-        app:layout_constraintBottom_toTopOf="@id/barsenhaCadIN"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="335dp" />
+        android:src="@drawable/ic_lock_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/barsenhaCadIN"
+        app:layout_constraintTop_toTopOf="@+id/barsenhaCadIN"
+        app:layout_constraintBottom_toBottomOf="@id/barsenhaCadIN"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

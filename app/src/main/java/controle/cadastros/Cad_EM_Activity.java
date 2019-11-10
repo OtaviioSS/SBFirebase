@@ -1,4 +1,4 @@
-package controle;
+package controle.cadastros;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+import controle.firebase.Conexao;
 import modelo.Empreendedor;
 
 
@@ -44,6 +45,7 @@ public class Cad_EM_Activity extends AppCompatActivity {
     private Uri imagemSelecionada;
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
 
     @Override
 
@@ -57,13 +59,11 @@ public class Cad_EM_Activity extends AppCompatActivity {
 
 
     }
-
     private void inicializarfirebase() {
         FirebaseApp.initializeApp(Cad_EM_Activity.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
-
     private void inicializarcomponentes() {
         txtnome = findViewById(R.id.barnomeCadEm);
         txtemail = findViewById(R.id.baremailCadEm);
@@ -73,8 +73,6 @@ public class Cad_EM_Activity extends AppCompatActivity {
 
 
     }
-
-
     View.OnClickListener selecionarimagem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -84,14 +82,10 @@ public class Cad_EM_Activity extends AppCompatActivity {
         }
     };
     @Override
-    protected void onStart() {
+    protected void onStart(){
         super.onStart();
         auth = Conexao.getFirebaseAuth();
     }
-
-
-
-
     View.OnClickListener registro = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -103,11 +97,10 @@ public class Cad_EM_Activity extends AppCompatActivity {
     };
 
     private void criarUser(String email, String senha) {
-        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(Cad_EM_Activity.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(Cad_EM_Activity.this,new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 try{
-
                 if (task.isSuccessful()) {
                     Empreendedor empreendedor = new Empreendedor();
                     empreendedor.setId(UUID.randomUUID().toString());
@@ -116,14 +109,10 @@ public class Cad_EM_Activity extends AppCompatActivity {
                     uploadimg();
                     databaseReference.child("Empreendedor").child(empreendedor.getId()).setValue(empreendedor);
                     limparcampos();
-                    Toast.makeText(Cad_EM_Activity.this, "Cadastrao com Sucesso", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Cad_EM_Activity.this, MainActivity.class);
-                    startActivity(i);
+                    Toast.makeText(Cad_EM_Activity.this, "Cadastrado com Sucesso", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(Cad_EM_Activity.this, "Erro ao cadastrar", Toast.LENGTH_SHORT).show();
-
-
+                    Toast.makeText(Cad_EM_Activity.this, "Erro ao Cadastrar", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                     e.printStackTrace();
@@ -134,7 +123,7 @@ public class Cad_EM_Activity extends AppCompatActivity {
 
     private void uploadimg() {
         String filename = UUID.randomUUID().toString();
-        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" +filename);
+        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
         ref.putFile(imagemSelecionada)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -153,14 +142,15 @@ public class Cad_EM_Activity extends AppCompatActivity {
 
             }
         });
+
+
+
     }
     private void limparcampos() {
         txtemail.setText("");
         txtnome.setText("");
         txtsenha.setText("");
     }
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

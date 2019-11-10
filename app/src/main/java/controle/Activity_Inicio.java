@@ -3,33 +3,33 @@ package controle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 
-
-import com.example.socitybusiness.Activity_AddIdeia;
 import com.example.socitybusiness.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import modelo.IdeiaModelo;
-import modelo.ideia.IdeiaAdapter;
+import controle.cadastros.Activity_AddIdeia;
+import controle.firebase.Conexao;
+import controle.ideiaControle.IdeiaAdapter;
 
 
 public class Activity_Inicio extends AppCompatActivity {
@@ -42,8 +42,11 @@ public class Activity_Inicio extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private IdeiaAdapter ideiaAdapter;
 
+    FirebaseUser mFirebaseUser;
+
 
     List<IdeiaModelo> listadeideias = new ArrayList<>();
+    private GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
@@ -53,13 +56,12 @@ public class Activity_Inicio extends AppCompatActivity {
         inicializarcomponentes();
         inicializarfirebase();
         cliquesdebotao();
-
+        setUpGoogleApiClient();
         recyclerView = findViewById(R.id.recyclerIicio);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         ideiaAdapter = new IdeiaAdapter(listadeideias);
         recyclerView.setAdapter(ideiaAdapter);
-
         RecuperarIdeias();
 
 
@@ -69,12 +71,19 @@ public class Activity_Inicio extends AppCompatActivity {
 
     }
 
+    public void setUpGoogleApiClient(){
+        //GoogleSignInOptions
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
     private void RecuperarIdeias() {
         DatabaseReference empresaRef = databaseReference.child("Ideias");
         empresaRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 listadeideias.clear();
 
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
@@ -91,8 +100,6 @@ public class Activity_Inicio extends AppCompatActivity {
             }
         });
     }
-
-
     private void inicializarcomponentes() {
         btnmais = findViewById(R.id.floatingAdd);
         btnfsair = findViewById(R.id.btnsair);
@@ -103,6 +110,8 @@ public class Activity_Inicio extends AppCompatActivity {
         FirebaseApp.initializeApp(Activity_Inicio.this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+
+
     }
     private void cliquesdebotao() {
         btnmais.setOnClickListener(abrirAddIdeias);
@@ -125,19 +134,25 @@ public class Activity_Inicio extends AppCompatActivity {
     }; View.OnClickListener sairdoApp = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(Activity_Inicio.this, MainActivity.class);
-            startActivity(intent);
+            singOut();
 
     }};
 
 
     private  void singOut(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();;
+         FirebaseAuth.getInstance().signOut();
+         finish();
+         Conexao.logout();
+
+
+
+
+
 
 
     }
+
+
 
 
 

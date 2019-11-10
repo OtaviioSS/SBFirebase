@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity_AddIdeia">
+    tools:context="controle.cadastros.Activity_AddIdeia">
 
 
     <EditText
         android:id="@+id/conteudoAddIdeia"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btnImgAddIdeia"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,14 +18,12 @@
         app:layout_constraintTop_toBottomOf="@+id/imgUserAddNovaIdeia"
         android:background="@drawable/barrasdetexto"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
         android:textColor="#000000"
         tools:hint="Faça umma curta descrição da sua Ideia ou Negocio."
         tools:ignore="Autofill,LabelFor,TextFields" />
 
 
     <ImageButton
-
         android:id="@+id/btnImgAddIdeia"
         android:layout_width="0dp"
         android:layout_height="300dp"
@@ -40,7 +38,7 @@
 
     <Button
         android:id="@+id/btnConcluirAddIdeia"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,11 +46,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="200dp"
         android:text="@string/concluir"
-        android:background="#eed700"
+        android:background="@drawable/btnredondo"
         android:textColor="#ffffff"
         android:layout_marginTop="40dp"
-        tools:layout_editor_absoluteX="197dp"
-        tools:layout_editor_absoluteY="600dp" />
+        />
 
     <ImageView
         android:id="@+id/imgUserAddNovaIdeia"

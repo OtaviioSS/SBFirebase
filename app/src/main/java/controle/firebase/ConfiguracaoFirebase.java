@@ -1,4 +1,4 @@
-package controle;
+package controle.firebase;
 
 
 import com.google.firebase.auth.FirebaseAuth;

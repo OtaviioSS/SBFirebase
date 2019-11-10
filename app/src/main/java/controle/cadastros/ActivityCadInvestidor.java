@@ -1,4 +1,4 @@
-package controle;
+package controle.cadastros;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +28,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
+
+import controle.firebase.Conexao;
+import controle.MainActivity;
 import modelo.Investidor;
 
 
@@ -57,7 +60,6 @@ public class ActivityCadInvestidor extends AppCompatActivity {
         inicializarfirebase();
 
     }
-
     private void inicializarfirebase() {
         FirebaseApp.initializeApp(ActivityCadInvestidor.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -78,39 +80,30 @@ public class ActivityCadInvestidor extends AppCompatActivity {
     View.OnClickListener selecionarimagem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             Intent intent =new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult( intent,0);
 
         }
     };
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
         auth = Conexao.getFirebaseAuth();
     }
-
-
-
-
     View.OnClickListener registro = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String email = txtemail.getText().toString().trim();
             String senha = txtsenha.getText().toString().trim();
             criarUser(email,senha);
-
         }
     };
-
-    private void criarUser(String email, String senha) {
+    private void criarUser(String email,String senha) {
         auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(ActivityCadInvestidor.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
                 if (task.isSuccessful()){
                     Investidor invest = new Investidor();
                     invest.setId(UUID.randomUUID().toString());
@@ -119,22 +112,19 @@ public class ActivityCadInvestidor extends AppCompatActivity {
                     invest.setPatrimoio(Integer.parseInt(txtpatrimonio.getText().toString()));
                     uploadimg();
                     databaseReference.child("Investidor").child(invest.getId()).setValue(invest);
-                    limparcampos();
                     Toast.makeText(ActivityCadInvestidor.this,"Cadastrao com Sucesso",Toast.LENGTH_SHORT).show();
+                    limparcampos();
                     Intent i = new Intent(ActivityCadInvestidor.this, MainActivity.class);
                     startActivity(i);
                     finish();
                 }else{
                     Toast.makeText(ActivityCadInvestidor.this,"Erro ao cadastrar",Toast.LENGTH_SHORT).show();
-
-
                 }
-
             }
         });
     }
-
     private void uploadimg() {
+
         String filename = UUID.randomUUID().toString();
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
         ref.putFile(imagemSelecionada)
@@ -151,30 +141,22 @@ public class ActivityCadInvestidor extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("Erro", e.getMessage(), e);
-
+                Log.e("Erro", e.getMessage(),e);
             }
         });
 
     }
-
     private void limparcampos() {
         txtemail.setText("");
         txtnome.setText("");
         txtpatrimonio.setText("");
         txtsenha.setText("");
     }
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 0) {
             imagemSelecionada = data.getData();
             addImgIN.setImageURI(imagemSelecionada);
-
         }
-
     }
-
 }

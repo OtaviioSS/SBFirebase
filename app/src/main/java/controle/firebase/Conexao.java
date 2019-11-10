@@ -1,4 +1,4 @@
-package controle;
+package controle.firebase;
 
 import androidx.annotation.NonNull;
 
@@ -19,8 +19,6 @@ public class Conexao {
     public static FirebaseAuth getFirebaseAuth(){
         if (firebaseAuth==null){
             inicializarFirebase();
-
-
         }
         return firebaseAuth;
 
@@ -28,14 +26,12 @@ public class Conexao {
     }
 
     private static void inicializarFirebase() {
-
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user !=null){
-
                     firebaseUser = user;
                 }
             }

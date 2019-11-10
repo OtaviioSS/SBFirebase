@@ -41,6 +41,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
+import controle.cadastros.ActivityCadInvestidor;
+import controle.cadastros.Activity_ResetSenha;
+import controle.cadastros.Cad_EM_Activity;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "lo" ;
@@ -64,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inicializarComponentes();
-        cliquesdebotao();
         inicializarfirebase();
+        cliquesdebotao();
         FacebookSdk.sdkInitialize(getApplicationContext());
         mAuth =FirebaseAuth.getInstance();
         firebaseauth();
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setUpGoogleApiClient();
     }
     private void cliquesdebotao() {
-        btnlogar.setOnClickListener(logarsem);
+        btnlogar.setOnClickListener(logar);
         btnCad.setOnClickListener(telacadastro);
         esqueci.setOnClickListener(resetarsenha);
         btnFacebook.setOnClickListener(Loginfb);
@@ -149,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser usuario = mAuth.getCurrentUser();
+                            Intent intent = new Intent(MainActivity.this,Activity_Inicio.class);
+                            startActivity(intent);
                         }else{
                             Toast.makeText(MainActivity.this,"O login Falhou",Toast.LENGTH_LONG).show();
                         }
@@ -160,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
             auth.signInWithEmailAndPassword(email,senha).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-
                     if(task.isSuccessful()){
                         Intent intent = new Intent(MainActivity.this, Activity_Inicio.class);
                         startActivity(intent);
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener resetarsenha = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Activity_ResetSenha.class);
+                Intent intent = new Intent(MainActivity.this, Activity_ResetSenha.class);
                 startActivity(intent);
             }
         };
@@ -223,13 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 login(email,senha);
                 }
             };
-        View.OnClickListener logarsem = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Activity_Inicio.class);
-                startActivity(intent);
-            }
-        };
+
 
     public void  updateUI(GoogleSignInAccount account){
         if(account != null){
@@ -242,36 +241,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        auth = Conexao.getFirebaseAuth();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+       
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mCallBackManager.onActivityResult(requestCode,resultCode,data);
-
-
-
         //----------------Google-------------------------------
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            if(task.isSuccessful()){
+
+
+            }
         }
 
     }
     public void setUpGoogleApiClient(){
-
         //GoogleSignInOptions
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
     View.OnClickListener cliquegoogle = new View.OnClickListener() {
@@ -283,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 // ...
             }
+
+
         }
     };
 
@@ -290,15 +284,12 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }

@@ -1,4 +1,4 @@
-package modelo.ideia;
+package controle.ideiaControle;
 
 import android.content.Context;
 import android.view.GestureDetector;

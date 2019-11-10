@@ -1,13 +1,10 @@
-package modelo.ideia;
+package controle.ideiaControle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.socitybusiness.R;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivityNF extends AppCompatActivity {
 

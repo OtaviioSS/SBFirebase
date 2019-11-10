@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="modelo.ideia.ActivityNF"
+    tools:context="controle.ideiaControle.ActivityNF"
     android:padding="10dp"
     >
 
@@ -51,12 +51,13 @@
         xhzhxbhzbxhzxhbzhxbhxbzhbxhzbxhb" />
 
 
-    <ImageButton
+    <ImageView
         android:layout_marginTop="8dp"
         android:id="@+id/imgpostTL"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:scaleType="centerCrop"
+        android:background="#4499"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conteudo"
@@ -67,16 +68,15 @@
         tools:ignore="ContentDescription" />
 
     <ImageButton
+
         android:id="@+id/btngosteiTL"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/ic_light_bulb"
-        android:textColor="#ffffff"
         app:layout_constraintEnd_toStartOf="@+id/btnsalvarTL"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgpostTL"
         tools:ignore="ContentDescription,MissingConstraints"
-        android:backgroundTint="#aaaaaa"
         />
 
     <ImageButton

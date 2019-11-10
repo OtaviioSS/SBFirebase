@@ -1,4 +1,4 @@
-package controle;
+package controle.cadastros;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import com.example.socitybusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+
+import controle.firebase.Conexao;
 
 public class Activity_ResetSenha extends AppCompatActivity {
     private EditText editEmail;
