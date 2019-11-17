@@ -6,23 +6,7 @@
     android:layout_height="match_parent"
     tools:context="controle.Activity_Inicio" android:layout_width="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="600dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="100dp"
-        android:clickable="true"
-        android:background="#eed700"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:layout_editor_absoluteX="305dp"
-        tools:layout_editor_absoluteY="633dp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerIicio"
@@ -34,25 +18,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/activity_nf" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="50dp"
-        android:id="@+id/btnsair"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-        tools:layout_editor_absoluteX="305dp"
-        tools:layout_editor_absoluteY="650dp" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegtion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        app:menu="@menu/menu"
+        app:itemTextColor="@android:color/white"
+        android:background="#eed700"
+        app:itemIconTint="@android:color/white"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="530dp"
         />

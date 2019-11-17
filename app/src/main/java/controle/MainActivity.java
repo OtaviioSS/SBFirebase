@@ -41,9 +41,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
-import controle.cadastros.ActivityCadInvestidor;
+import controle.cadastros.Activity_Cad_IN;
 import controle.cadastros.Activity_ResetSenha;
-import controle.cadastros.Cad_EM_Activity;
+import controle.cadastros.Activity_Cad_EM;
+import controle.firebase.Conexao;
+import modelo.Empreendedor;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference ;
     private GoogleSignInClient mGoogleSignInClient;
+    public String tipo ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +73,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         inicializarComponentes();
         inicializarfirebase();
-        cliquesdebotao();
         FacebookSdk.sdkInitialize(getApplicationContext());
         mAuth =FirebaseAuth.getInstance();
         firebaseauth();
         gerenciadorLogin();
-
+        cliquesdebotao();
+        Empreendedor empreendedor = new Empreendedor();
+        tipo = empreendedor.getTipo();
         //---------------LOGIN GOOGLE--------------------------------
         findViewById(R.id.sign_in_button).setOnClickListener(cliquegoogle);
         setUpGoogleApiClient();
-    }
-    private void cliquesdebotao() {
-        btnlogar.setOnClickListener(logar);
-        btnCad.setOnClickListener(telacadastro);
-        esqueci.setOnClickListener(resetarsenha);
-        btnFacebook.setOnClickListener(Loginfb);
-
     }
     private void inicializarComponentes() {
         esqueci = findViewById(R.id.btnEsqueci);
@@ -97,15 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void escolherTipoCad() {
-        AlertDialog alertDialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Qual o tipo de conta Você deseja?");
-        builder.setPositiveButton("Empreendedor", EM);
-        builder.setNegativeButton("Investidor", IA);
-        alertDialog = builder.create();
-        alertDialog.show();
+    private void cliquesdebotao() {
+        btnlogar.setOnClickListener(logar);
+        btnCad.setOnClickListener(telacadastro);
+        esqueci.setOnClickListener(resetarsenha);
+        btnFacebook.setOnClickListener(Loginfb);
     }
     private void inicializarfirebase() {
 
@@ -161,7 +155,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void login(String email, String senha) {
+    private void escolherTipoCad() {
+        AlertDialog alertDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Qual o tipo de conta Você deseja?");
+        builder.setPositiveButton("Empreendedor", EM);
+        builder.setNegativeButton("Investidor", IA);
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void login(String email,String senha) {
         try {
             auth.signInWithEmailAndPassword(email,senha).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -169,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Intent intent = new Intent(MainActivity.this, Activity_Inicio.class);
                         startActivity(intent);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
                     }else{
                         Toast.makeText(MainActivity.this,"Erro ao efetuar login",Toast.LENGTH_SHORT).show();
                     }
@@ -183,13 +190,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    View.OnClickListener logar = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String email = baremail.getText().toString().trim();
+            String senha = barsenha.getText().toString().trim();
+            login(email,senha);
+        }
+    };
+
 
     View.OnClickListener telacadastro = new View.OnClickListener() {
-          @Override
-             public void onClick(View view) {
-              escolherTipoCad();
+        @Override
+        public void onClick(View view) {
+            escolherTipoCad();
 
-             }};
+        }};
     View.OnClickListener Loginfb = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -200,34 +216,29 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     DialogInterface.OnClickListener EM = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-              Intent intenEM = new Intent(MainActivity.this, Cad_EM_Activity.class);
-              startActivity(intenEM);
-            }
-        };
-        DialogInterface.OnClickListener IA = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(MainActivity.this, ActivityCadInvestidor.class);
-                startActivity(intent);
-            }
-        };
-        View.OnClickListener resetarsenha = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Activity_ResetSenha.class);
-                startActivity(intent);
-            }
-        };
-        View.OnClickListener logar = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = baremail.getText().toString().trim();
-                String senha = barsenha.getText().toString().trim();
-                login(email,senha);
-                }
-            };
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Intent intenEM = new Intent(MainActivity.this, Activity_Cad_EM.class);
+            startActivity(intenEM);
+            tipo="EM";
+        }
+    };
+    DialogInterface.OnClickListener IA = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            Intent intent = new Intent(MainActivity.this, Activity_Cad_IN.class);
+            startActivity(intent);
+            tipo="IN";
+        }
+    };
+    View.OnClickListener resetarsenha = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, Activity_ResetSenha.class);
+            startActivity(intent);
+        }
+    };
+
 
 
     public void  updateUI(GoogleSignInAccount account){
@@ -241,20 +252,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       
+        auth = Conexao.getFirebaseAuth();
+
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallBackManager.onActivityResult(requestCode,resultCode,data);
-        //----------------Google-------------------------------
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-            if(task.isSuccessful()){
-
-
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // ...
             }
         }
 
@@ -262,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
     public void setUpGoogleApiClient(){
         //GoogleSignInOptions
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -275,11 +292,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 // ...
             }
-
-
         }
     };
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -302,12 +316,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(acct);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             updateUI(null);
                         }
@@ -315,6 +327,6 @@ public class MainActivity extends AppCompatActivity {
                         // ...
                     }
                 });
-    }
+    }}
 
-}
+

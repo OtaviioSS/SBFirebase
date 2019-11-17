@@ -63,19 +63,18 @@
             tools:ignore="LabelFor"
             tools:targetApi="p" />
 
-        <Button
-            android:id="@+id/btnLogarLogin"
-            android:layout_width="350dp"
-            android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/btnCadEmail"
-            app:layout_constraintTop_toBottomOf="@+id/barSenhaLogin"
-            android:textColor="#ffffff"
-            android:text="@string/entrar"
-            android:background="@drawable/btnloginshape"
-            android:layout_marginBottom="6dp"
-            />
+    <Button
+        android:id="@+id/btnLogarLogin"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/btnloginshape"
+        android:text="@string/entrar"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/btnCadEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barSenhaLogin" />
 
 
     <TextView
@@ -111,11 +110,6 @@
             android:textAlignment="center"
             android:textSize="15sp"
             />
-
-
-
-
-
     <Button
         android:drawableStart="@drawable/ic_facebook_square_social_logo"
         android:background="@drawable/btnfb"

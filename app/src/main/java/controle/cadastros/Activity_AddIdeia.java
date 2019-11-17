@@ -1,38 +1,35 @@
 package controle.cadastros;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.socitybusiness.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
+import com.squareup.picasso.Picasso;
 import java.util.UUID;
-
 import modelo.IdeiaModelo;
 
 public class Activity_AddIdeia extends AppCompatActivity {
-    private ImageButton addimg;
+
+    private EditText descricaodadideia;
     private Button concluir;
     private EditText conteudo;
+    private TextView nome;
     private DatabaseReference databaseReference;
-    private Uri imagemSelecionada;
+    private ImageView imagePerfilusuario;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,74 +39,51 @@ public class Activity_AddIdeia extends AppCompatActivity {
         inicializarfirebase();
 
 
-
     }
 
-    private void inicializarfirebase() {
+    public void inicializarfirebase() {
         FirebaseApp.initializeApp(Activity_AddIdeia.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+
+
+
+
+
 
 
     }
 
     private void cliquesdebotoes() {
 
-        addimg.setOnClickListener(selecionarimagem);
+
         concluir.setOnClickListener(adicionarIdeia);
     }
 
     private void inicializarcompnetente() {
         conteudo = findViewById(R.id.conteudoAddIdeia);
-        addimg = findViewById(R.id.btnImgAddIdeia);
+        nome = findViewById(R.id.txtusename);
+        descricaodadideia = findViewById(R.id.descricao);
         concluir = findViewById(R.id.btnConcluirAddIdeia);
+        imagePerfilusuario = findViewById(R.id.imgUserAddNovaIdeia);
 
     }
 
-    View.OnClickListener selecionarimagem = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent =new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult( intent,0);
-        }
-    };
-    private void uploadimg() {
-        String filename = UUID.randomUUID().toString();
-        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
-        ref.putFile(imagemSelecionada)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Log.i("Sucesso", uri.toString());
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("Erro", e.getMessage(), e);
-            }
-        });
-
-
-
-    }
     View.OnClickListener adicionarIdeia = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             try {
                 IdeiaModelo ideia = new IdeiaModelo();
-                ideia.setIdEM(UUID.randomUUID().toString());
                 ideia.setConteudo(conteudo.getText().toString());
-                databaseReference.child("Ideias").child(ideia.getIdEM()).setValue(ideia);
-                uploadimg();
-                Toast.makeText(Activity_AddIdeia.this,"Ideia Adicionada com Sucesso",Toast.LENGTH_LONG).show();
-            }catch (RuntimeException err){
-                Toast.makeText(Activity_AddIdeia.this,"Erro" +err,Toast.LENGTH_LONG).show();
+                ideia.setNomeuser(nome.getText().toString());
+                ideia.setImguser(imagePerfilusuario.toString());
+                ideia.setDescricao(descricaodadideia.getText().toString());
+                ideia.setId(UUID.randomUUID().toString());
+                databaseReference.child("Ideias").child(ideia.getId()).setValue(ideia);
+
+                Toast.makeText(Activity_AddIdeia.this, "Ideia Adicionada com Sucesso", Toast.LENGTH_LONG).show();
+            } catch (RuntimeException err) {
+                Toast.makeText(Activity_AddIdeia.this, "Erro  " + err, Toast.LENGTH_LONG).show();
 
             }
         }
@@ -117,11 +91,29 @@ public class Activity_AddIdeia extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 0) {
-            imagemSelecionada = data.getData();
-            addimg.setImageURI(imagemSelecionada);
 
+
+    }
+    private void RecuperarEmpreendedor() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            nome.setText(user.getEmail());
+        } else {
+
+            Toast.makeText(Activity_AddIdeia.this,"Erro ao recuperar email",Toast.LENGTH_LONG).show();
         }
+
+
+        Picasso.get()
+                .load("gs://socity-business.appspot.com/images/52e437fc-aed7-417f-941e-26fb259184b6")
+                .resize(50,50)
+                .error(R.drawable.ic_person_black_24dp)
+                .into(imagePerfilusuario);
+    }
+        @Override
+    protected void onStart() {
+        super.onStart();
+        RecuperarEmpreendedor();
 
     }
 }

@@ -25,6 +25,12 @@ public class Conexao {
 
     }
 
+
+    public  static String getidusuario(){
+        FirebaseAuth auth = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        return auth.getCurrentUser().getUid();
+
+    }
     private static void inicializarFirebase() {
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {

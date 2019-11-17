@@ -144,6 +144,9 @@
     <string name="facebook_app_id">480172649245912</string>
     <string name="fb_login_protocol_scheme">fb480172649245912</string>
     <string name="entrar">Entrar</string>
+    <string name="addideia">addideia</string>
+    <string name="salvos">salvos</string>
+    <string name="sair">sair</string>
 
 
 </resources>

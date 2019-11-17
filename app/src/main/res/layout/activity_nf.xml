@@ -9,7 +9,8 @@
     >
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:background="@drawable/btnredondo"
         android:id="@+id/userid"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -29,6 +30,7 @@
         android:textColor="@android:color/black"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/userid"
         app:layout_constraintBottom_toBottomOf="@id/userid"
         app:layout_constraintStart_toEndOf="@+id/userid"
 
@@ -43,53 +45,30 @@
         app:layout_constraintStart_toStartOf="@+id/userid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userid"
-        app:layout_constraintBottom_toTopOf="@+id/imgpostTL"
+        app:layout_constraintBottom_toTopOf="@+id/descricaopost"
         android:layout_marginTop="10dp"
         app:layout_goneMarginBottom="10dp"
         android:layout_marginBottom="5dp"
-        tools:text="Eu sou a videira verdadeira e tu es as folhsa
-        xhzhxbhzbxhzxhbzhxbhxbzhbxhzbxhb" />
+        tools:text="Titulo"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        />
 
 
-    <ImageView
+    <TextView
         android:layout_marginTop="8dp"
-        android:id="@+id/imgpostTL"
-        android:layout_width="0dp"
+        android:id="@+id/descricaopost"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:background="#4499"
+        android:background="#ddffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conteudo"
-        app:layout_constraintDimensionRatio="16:9"
-        android:autofillHints="@string/add_foto"
         android:padding="10dp"
+        android:hint=""
+      />
 
-        tools:ignore="ContentDescription" />
 
-    <ImageButton
-
-        android:id="@+id/btngosteiTL"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/ic_light_bulb"
-        app:layout_constraintEnd_toStartOf="@+id/btnsalvarTL"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgpostTL"
-        tools:ignore="ContentDescription,MissingConstraints"
-        />
-
-    <ImageButton
-        android:id="@+id/btnsalvarTL"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="120dp"
-        android:background="@drawable/ic_favorite_black_24dp"
-       app:layout_constraintStart_toEndOf="@id/btngosteiTL"
-        app:layout_constraintTop_toBottomOf="@+id/imgpostTL"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
-        tools:ignore="ContentDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

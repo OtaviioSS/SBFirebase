@@ -7,6 +7,17 @@ public class Empreendedor {
     private String senha;
     private String id;
     private String tipo;
+    private String imguser;
+
+
+
+
+    public String getImguser() {
+        return imguser;
+    }
+    public void setImguser(String imguser) {
+        this.imguser = imguser;
+    }
 
     public String getNome() {
         return nome;

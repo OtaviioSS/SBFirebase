@@ -1,8 +1,5 @@
 package controle.cadastros;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socitybusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,72 +23,78 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-import controle.firebase.Conexao;
+import controle.Activity_Inicio;
 import controle.MainActivity;
-import modelo.Investidor;
+import controle.firebase.Conexao;
+import modelo.Empreendedor;
 
 
 
-public class ActivityCadInvestidor extends AppCompatActivity {
+public class Activity_Cad_EM extends AppCompatActivity {
 
 
     private EditText txtnome;
     private EditText txtemail;
     private EditText txtsenha;
     private Button concluir;
-    private FirebaseAuth auth;
-    private EditText txtpatrimonio;
-    private DatabaseReference databaseReference;
-    private ImageButton addImgIN;
+    private ImageButton addFotoEM;
     private Uri imagemSelecionada;
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
+    private Uri url;
+    private String tipo;
+    Empreendedor empreendedor = new Empreendedor();
+    MainActivity mainActivity = new MainActivity();
+
+
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cad_ia_ctivity);
+        setContentView(R.layout.activity_cad__em_);
+        tipo = mainActivity.tipo;
         inicializarcomponentes();
         concluir.setOnClickListener(registro);
-        addImgIN.setOnClickListener(selecionarimagem);
-
+        addFotoEM.setOnClickListener(selecionarimagem);
         inicializarfirebase();
 
+
     }
+
+
+
     private void inicializarfirebase() {
-        FirebaseApp.initializeApp(ActivityCadInvestidor.this);
+        FirebaseApp.initializeApp(Activity_Cad_EM.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
-
     private void inicializarcomponentes() {
-        txtnome = findViewById(R.id.barnomeCadIN);
-        txtpatrimonio = findViewById(R.id.vlpratimonio);
-        txtemail = findViewById(R.id.baremailCadIN);
-        txtsenha = findViewById(R.id.barsenhaCadIN);
-        concluir = findViewById(R.id.btnconcluirCadIN);
-        addImgIN = findViewById(R.id.btnselcfoto);
-
+        txtnome = findViewById(R.id.barnomeCadEm);
+        txtemail = findViewById(R.id.baremailCadEm);
+        txtsenha = findViewById(R.id.barsenhaCadEm);
+        concluir = findViewById(R.id.btnconcluirCadEm);
+        addFotoEM = findViewById(R.id.btnselcFotoCadEm);
 
 
     }
     View.OnClickListener selecionarimagem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent =new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult( intent,0);
-
         }
     };
     @Override
-    protected void onStart() {
+    protected void onStart(){
         super.onStart();
         auth = Conexao.getFirebaseAuth();
     }
@@ -98,65 +104,86 @@ public class ActivityCadInvestidor extends AppCompatActivity {
             String email = txtemail.getText().toString().trim();
             String senha = txtsenha.getText().toString().trim();
             criarUser(email,senha);
+
         }
     };
+
+
+
     private void criarUser(String email,String senha) {
-        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(ActivityCadInvestidor.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(Activity_Cad_EM.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                try{
                 if (task.isSuccessful()){
-                    Investidor invest = new Investidor();
-                    invest.setId(UUID.randomUUID().toString());
-                    invest.setEmail(txtemail.getText().toString());
-                    invest.setNome(txtnome.getText().toString());
-                    invest.setPatrimoio(Integer.parseInt(txtpatrimonio.getText().toString()));
+                    empreendedor.setId(UUID.randomUUID().toString());
+                    empreendedor.setEmail(txtemail.getText().toString());
+                    empreendedor.setNome(txtnome.getText().toString());
                     uploadimg();
-                    databaseReference.child("Investidor").child(invest.getId()).setValue(invest);
-                    Toast.makeText(ActivityCadInvestidor.this,"Cadastrao com Sucesso",Toast.LENGTH_SHORT).show();
+                    empreendedor.setImguser(url.toString());
+                    databaseReference.child("Empreendedor").child(empreendedor.getId()).setValue(empreendedor);
+                    Intent intent = new Intent(Activity_Cad_EM.this, Activity_Inicio.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     limparcampos();
-                    Intent i = new Intent(ActivityCadInvestidor.this, MainActivity.class);
-                    startActivity(i);
+                    Toast.makeText(Activity_Cad_EM.this, "Cadastrado com Sucesso", Toast.LENGTH_SHORT).show();
                     finish();
-                }else{
-                    Toast.makeText(ActivityCadInvestidor.this,"Erro ao cadastrar",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Activity_Cad_EM.this, "Erro ao Cadastrar", Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
     }
-    private void uploadimg() {
 
+
+
+    private void uploadimg() {
         String filename = UUID.randomUUID().toString();
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
         ref.putFile(imagemSelecionada)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Log.i("Sucesso", uri.toString());
+                                Toast.makeText(Activity_Cad_EM.this,"Sucesso ao carregar a imagem",Toast.LENGTH_SHORT).show();
+                                url = uri;
+
+
                             }
                         });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("Erro", e.getMessage(),e);
+                Log.e("Erro", e.getMessage(), e);
+
             }
         });
 
+
+
+
     }
+
+
     private void limparcampos() {
         txtemail.setText("");
         txtnome.setText("");
-        txtpatrimonio.setText("");
         txtsenha.setText("");
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             imagemSelecionada = data.getData();
-            addImgIN.setImageURI(imagemSelecionada);
+            addFotoEM.setImageURI(imagemSelecionada);
+
         }
+
     }
+
 }

@@ -1,5 +1,8 @@
 package controle.cadastros;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,9 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socitybusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,59 +30,65 @@ import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
 
 import controle.firebase.Conexao;
-import modelo.Empreendedor;
+import controle.MainActivity;
+import modelo.Investidor;
 
 
 
-public class Cad_EM_Activity extends AppCompatActivity {
+public class Activity_Cad_IN extends AppCompatActivity {
 
 
     private EditText txtnome;
     private EditText txtemail;
     private EditText txtsenha;
     private Button concluir;
-    private ImageButton addFotoEM;
-    private Uri imagemSelecionada;
     private FirebaseAuth auth;
+    private EditText txtpatrimonio;
     private DatabaseReference databaseReference;
-    private FirebaseStorage firebaseStorage;
+    private ImageButton addImgIN;
+    private Uri imagemSelecionada;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cad__em_);
+        setContentView(R.layout.activity_cad_ia_ctivity);
         inicializarcomponentes();
         concluir.setOnClickListener(registro);
-        addFotoEM.setOnClickListener(selecionarimagem);
-        inicializarfirebase();
+        addImgIN.setOnClickListener(selecionarimagem);
 
+        inicializarfirebase();
 
     }
     private void inicializarfirebase() {
-        FirebaseApp.initializeApp(Cad_EM_Activity.this);
+        FirebaseApp.initializeApp(Activity_Cad_IN.this);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
+
     private void inicializarcomponentes() {
-        txtnome = findViewById(R.id.barnomeCadEm);
-        txtemail = findViewById(R.id.baremailCadEm);
-        txtsenha = findViewById(R.id.barsenhaCadEm);
-        concluir = findViewById(R.id.btnconcluirCadEm);
-        addFotoEM = findViewById(R.id.btnselcFotoCadEm);
+        txtnome = findViewById(R.id.barnomeCadIN);
+        txtpatrimonio = findViewById(R.id.vlpratimonio);
+        txtemail = findViewById(R.id.baremailCadIN);
+        txtsenha = findViewById(R.id.barsenhaCadIN);
+        concluir = findViewById(R.id.btnconcluirCadIN);
+        addImgIN = findViewById(R.id.btnselcfoto);
+
 
 
     }
     View.OnClickListener selecionarimagem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             Intent intent =new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult( intent,0);
+
         }
     };
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         auth = Conexao.getFirebaseAuth();
     }
@@ -92,35 +98,31 @@ public class Cad_EM_Activity extends AppCompatActivity {
             String email = txtemail.getText().toString().trim();
             String senha = txtsenha.getText().toString().trim();
             criarUser(email,senha);
-
         }
     };
-
-    private void criarUser(String email, String senha) {
-        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(Cad_EM_Activity.this,new OnCompleteListener<AuthResult>() {
+    private void criarUser(String email,String senha) {
+        auth.createUserWithEmailAndPassword(email,senha).addOnCompleteListener(Activity_Cad_IN.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                try{
-                if (task.isSuccessful()) {
-                    Empreendedor empreendedor = new Empreendedor();
-                    empreendedor.setId(UUID.randomUUID().toString());
-                    empreendedor.setEmail(txtemail.getText().toString());
-                    empreendedor.setNome(txtnome.getText().toString());
+                if (task.isSuccessful()){
+                    Investidor invest = new Investidor();
+                    invest.setId(UUID.randomUUID().toString());
+                    invest.setEmail(txtemail.getText().toString());
+                    invest.setNome(txtnome.getText().toString());
+                    invest.setPatrimoio(Integer.parseInt(txtpatrimonio.getText().toString()));
                     uploadimg();
-                    databaseReference.child("Empreendedor").child(empreendedor.getId()).setValue(empreendedor);
+                    databaseReference.child("Usuario").child("Investidor").child(invest.getId()).setValue(invest);
+                    Toast.makeText(Activity_Cad_IN.this,"Cadastrao com Sucesso",Toast.LENGTH_SHORT).show();
                     limparcampos();
-                    Toast.makeText(Cad_EM_Activity.this, "Cadastrado com Sucesso", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Activity_Cad_IN.this, MainActivity.class);
+                    startActivity(i);
                     finish();
-                } else {
-                    Toast.makeText(Cad_EM_Activity.this, "Erro ao Cadastrar", Toast.LENGTH_SHORT).show();
-                }
-            }catch (Exception e){
-                    e.printStackTrace();
+                }else{
+                    Toast.makeText(Activity_Cad_IN.this,"Erro ao cadastrar",Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
     private void uploadimg() {
         String filename = UUID.randomUUID().toString();
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
@@ -138,28 +140,22 @@ public class Cad_EM_Activity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("Erro", e.getMessage(), e);
-
+                Log.e("Erro", e.getMessage(),e);
             }
         });
-
-
 
     }
     private void limparcampos() {
         txtemail.setText("");
         txtnome.setText("");
+        txtpatrimonio.setText("");
         txtsenha.setText("");
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 0) {
             imagemSelecionada = data.getData();
-            addFotoEM.setImageURI(imagemSelecionada);
-
+            addImgIN.setImageURI(imagemSelecionada);
         }
-
     }
-
 }

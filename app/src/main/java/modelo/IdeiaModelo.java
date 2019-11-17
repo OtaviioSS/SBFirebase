@@ -11,7 +11,7 @@ public class IdeiaModelo implements Serializable {
     private String conteudo;
     private String IdEM;
     private String imguser; // vai armazenar o identificador do recurso
-    private String imgpub; // vai armazenar o identificador do recurso
+    private String descricao;
 
 
     public IdeiaModelo(){
@@ -19,11 +19,11 @@ public class IdeiaModelo implements Serializable {
     }
 
 
-    public IdeiaModelo(String nomeuser, String conteudo, String imguser, String imgpub, String Id) {
+    public IdeiaModelo(String nomeuser, String conteudo, String imguser, String descricao, String Id) {
         this.nomeuser = nomeuser;
         this.conteudo = conteudo;
         this.imguser = imguser;
-        this.imgpub = imgpub;
+        this.descricao = descricao;
         this.Id = Id;
 
 
@@ -75,12 +75,12 @@ public class IdeiaModelo implements Serializable {
         this.imguser = imguser;
     }
 
-    public String getImgpub() {
-        return imgpub;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setImgpub(String imgpub) {
-        this.imgpub = imgpub;
+    public void setDescricao(String imgpub) {
+        this.descricao = imgpub;
     }
 }
 
